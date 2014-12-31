@@ -1,0 +1,15 @@
+{
+	"es3": true,
+	"laxcomma": true,
+	"quotmark": true,
+	"undef": true,
+	"unused": true,
+	"trailing": true,
+	"browser": true,
+	"nonew": true,
+	"latedef": true,
+	"smarttabs": true,
+	"newcap": true,
+	"predef": ["Metamaps","Raphael","jQuery","require"],
+	"maxlen": 120
+}

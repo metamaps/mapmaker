@@ -1,0 +1,5 @@
+{
+	"extends" : "../.jshintrc",
+	"predef"  : ["describe","it","expect","beforeEach","spyOn","Metamaps","$"],
+  "maxlen" : false
+}

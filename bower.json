@@ -1,0 +1,35 @@
+{
+  "name": "metamaps",
+  "version": "0.1.0",
+  "authors": [
+    "Connor Turland <connorturland@gmail.com>"
+  ],
+  "description": "Map Complexity",
+  "main": "metamaps_renderer.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "AGPL",
+  "homepage": "http://metamaps.cc",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "1.0.0",
+    "underscore": "1.4.4",
+    "snap.svg": "~0.3.0",
+    "Countable": "~2.1.0",
+    "typeahead.js": "0.9.3",
+    "socket.io-client": "0.9.11",
+    "CloudCarousel": "https://github.com/Connoropolous/CloudCarousel.git",
+    "embedly": "https://github.com/Connoropolous/embedly.git"
+  },
+  "devDependencies": {
+    "jquery": "1.9.0"
+  }
+}

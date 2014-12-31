@@ -1,0 +1,10 @@
+node_modules/
+dist/
+doc/
+serve/js
+serve/img
+serve/css
+css/
+deploy/
+.grunt/
+bower_components/

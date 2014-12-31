@@ -1,0 +1,4 @@
+set noet
+set tabstop=2
+set shiftwidth=2
+let g:ctrlp_custom_ignore = 'node_modules\|.git'

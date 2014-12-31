@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/metamapsMapRender.css" />
+		<style>
+			html * {
+				box-sizing: border-box;
+			}
+			#mapCanvas {
+				border   : 1px solid black;
+				position : absolute;
+				top      : 10px;
+				bottom   : 10px;
+				left     : 10px;
+				right    : 150px;
+			}
+			#controls {
+				position : absolute;
+				top      : 10px;
+				bottom   : 10px;
+				right    : 0px;
+				width    : 140px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="mapCanvas"></div>
+		<div id="controls">
+			<div>
+				<button id="zoomIn">Zoom In</button>
+			</div>
+		</div>
+		<script src="js/bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="js/metamaps_renderer.js"></script>
+		<script>
+      var map = {};
+			var config = {};
+			var canvasEl = document.getElementById("mapCanvas");
+			var renderer = Metamaps.MapRendererFactory.create(
+				canvasEl,
+				config,
+				map);
+			$(renderer).on(Metamaps.MapRenderer.events.message, function (event, message) {
+					console.log(message);
+			});
+		</script>
+	</body>
+</html>
