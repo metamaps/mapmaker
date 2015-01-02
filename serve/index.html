@@ -34,32 +34,25 @@
 		<script src="js/bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="js/metamaps_renderer.js"></script>
 		<script>
-			var map;
+			var map, renderer;
 
 			function start(data) {
 				var topicMappings, synapseMappings;
 
-				if (data) {
-					map = new Metamaps.Map(data.map);
+				map = new Metamaps.Map(data.map);
 
-					map.set('topics', new Metamaps.TopicCollection(data.topics));
-		            map.set('synapses', new Metamaps.SynapseCollection(data.synapses));
-		            
-		            topicMappings = _.where(data.mappings, {category: "Topic"});
-		            map.set('topicMappings', new Metamaps.MappingCollection(topicMappings));
+				map.set('topics', new Metamaps.TopicCollection(data.topics));
+	            map.set('synapses', new Metamaps.SynapseCollection(data.synapses));
+	            
+	            topicMappings = _.where(data.mappings, {category: "Topic"});
+	            map.set('topicMappings', new Metamaps.MappingCollection(topicMappings));
 
-		            synapseMappings = _.where(data.mappings, {category: "Synapse"});;
-		            map.set('synapseMappings', new Metamaps.MappingCollection(synapseMappings));
-				}
-
-				var XLOC = 560;
-	      		var YLOC = 0;
-	      		var XLOC2 = 0;
-	      		var YLOC2 = 0;
+	            synapseMappings = _.where(data.mappings, {category: "Synapse"});
+	            map.set('synapseMappings', new Metamaps.MappingCollection(synapseMappings));
 
 				var config = {};
 				var canvasEl = document.getElementById("mapCanvas");
-				var renderer = Metamaps.MapRendererFactory.create(
+				renderer = Metamaps.MapRendererFactory.create(
 					canvasEl,
 					config,
 					map);
