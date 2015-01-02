@@ -28,7 +28,8 @@
     "socket.io-client": "0.9.11",
     "CloudCarousel": "https://github.com/Connoropolous/CloudCarousel.git",
     "embedly": "https://github.com/Connoropolous/embedly.git",
-    "famous": "~0.3.4"
+    "famous": "~0.3.4",
+    "hogan": "https://github.com/Connoropolous/Hogan.git"
   },
   "devDependencies": {
     "jquery": "1.9.0"
