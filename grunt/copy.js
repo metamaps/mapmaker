@@ -19,11 +19,15 @@ module.exports = {
 //			expand: true,
 //			dest: 'serve/js/'
 		}, {
-			src: 'testdata/*',
+			src: 'maps/*',
 			expand: true,
 			dest: 'serve/json/'
 		}, {
-			src: 'img/*',
+			src: 'metacodes/*',
+			expand: true,
+			dest: 'serve/json/'
+		}, {
+			src: 'img/**/*',
 			expand: true,
 			dest: 'serve/img',
 			nonull: true,

@@ -28,7 +28,7 @@
 		<div id="mapCanvas"></div>
 		<div id="controls">
 			<div>
-				<button id="zoomIn">Zoom In</button>
+				<!--<button id="zoomIn">Zoom In</button>-->
 			</div>
 		</div>
 		<script src="js/bower_components/jquery/dist/jquery.min.js"></script>
@@ -41,14 +41,14 @@
 
 				map = new Metamaps.Map(data.map);
 
-				map.set('topics', new Metamaps.TopicCollection(data.topics));
-	            map.set('synapses', new Metamaps.SynapseCollection(data.synapses));
+				map.set("topics", new Metamaps.TopicCollection(data.topics));
+	            map.set("synapses", new Metamaps.SynapseCollection(data.synapses));
 	            
 	            topicMappings = _.where(data.mappings, {category: "Topic"});
-	            map.set('topicMappings', new Metamaps.MappingCollection(topicMappings));
+	            map.set("topicMappings", new Metamaps.MappingCollection(topicMappings));
 
 	            synapseMappings = _.where(data.mappings, {category: "Synapse"});
-	            map.set('synapseMappings', new Metamaps.MappingCollection(synapseMappings));
+	            map.set("synapseMappings", new Metamaps.MappingCollection(synapseMappings));
 
 				var config = {};
 				var canvasEl = document.getElementById("mapCanvas");
@@ -62,7 +62,7 @@
 			};
 
 			$.ajax({
-	            url: "/json/testdata/map1113.json",
+	            url: "/json/maps/map1113.json",
 	            success: start
 	        });
 		</script>

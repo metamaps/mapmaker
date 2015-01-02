@@ -4,8 +4,6 @@ things to figure out
 -----------------
 selection --> drawing the box , highlighting selected things
 
-drawing the synapses
-
 zooming
 
 the carousel, double clicking to bring it up
@@ -70,6 +68,6 @@ mainContext
 			[] modNode (topicMappingView)
 				imageSurface
 				nameSurface
-			?          (synapseMappingView)
-
+			[] modNode (synapseMappingView)
+				lineSurface					// try using scale instead of setting 'size' of div
 
