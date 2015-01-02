@@ -3,7 +3,7 @@ module.exports = {
 		src: ['lib/*.js'],
 		dest: 'doc',
 		options: {
-			external: 'jQuery, Raphael, Raphael.Paper'
+			external: 'jQuery, Snap, Snap.Paper'
 		}
 	}
 };

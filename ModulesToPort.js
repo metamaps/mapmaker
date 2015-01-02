@@ -23,6 +23,12 @@ Metamaps.Settings -> defaultConfig
 Metamaps.Create
 
 
+map
+	topicMappings []
+	synapseMappings []
+	topics []
+	synapses []
+
 mapView
 	infoBox (mapInfoBoxView)
 	topicCards
@@ -40,5 +46,14 @@ mapView
 	synapses
 		[] synapseMappingView
 
+
+
+mainContext
+	translateModNode
+		originModNode
+			[] modNode (topicMappingView)
+				imageSurface
+				nameSurface
+			?          (synapseMappingView)
 
 

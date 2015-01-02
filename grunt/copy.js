@@ -14,10 +14,14 @@ module.exports = {
 			nonull: true,
 			flatten: true,
 			filter: 'isFile'
+//		}, {
+//			src: 'bower_components/**/*',
+//			expand: true,
+//			dest: 'serve/js/'
 		}, {
-			src: 'bower_components/**/*',
+			src: 'testdata/*',
 			expand: true,
-			dest: 'serve/js/'
+			dest: 'serve/json/'
 		}, {
 			src: 'img/*',
 			expand: true,

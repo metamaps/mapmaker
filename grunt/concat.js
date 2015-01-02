@@ -13,6 +13,7 @@ module.exports = {
 			'bower_components/typeahead.js/dist/typeahead.bundle.min.js',
 			'bower_components/CloudCarousel/cloudcarousel.js',
 			'bower_components/embedly/embedly.js',
+			'bower_components/famous/dist/famous-global.min.js',
 			'lib/utility.js',
 			'lib/views/mapInfoBoxView.js',
 			'lib/views/metacodeSetSwitchView.js',

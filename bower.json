@@ -27,7 +27,8 @@
     "typeahead.js": "0.9.3",
     "socket.io-client": "0.9.11",
     "CloudCarousel": "https://github.com/Connoropolous/CloudCarousel.git",
-    "embedly": "https://github.com/Connoropolous/embedly.git"
+    "embedly": "https://github.com/Connoropolous/embedly.git",
+    "famous": "~0.3.4"
   },
   "devDependencies": {
     "jquery": "1.9.0"
