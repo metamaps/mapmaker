@@ -2,7 +2,7 @@ module.exports = {
 	serveReload: {
 		options: {
 			'debug': true,
-			'port': '8080',
+			'port': '4000',
 			'base': 'serve/',
 			open: true,
 			livereload: true
@@ -11,7 +11,7 @@ module.exports = {
 	serve: {
 		options: {
 			debug: true,
-			port: '8080',
+			port: '4000',
 			base: 'serve/',
 			open: true,
 			keepalive: true
@@ -20,7 +20,7 @@ module.exports = {
 	serveNoOpen: {
 		options: {
 			debug: true,
-			port: '8080',
+			port: '4000',
 			base: 'serve/',
 			open: false,
 			keepalive: true

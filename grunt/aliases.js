@@ -31,7 +31,7 @@ module.exports = {
 		'copy:serve',
 		'connect:serveNoOpen'
 	],
-	serveNoReload: [
+	serveReload: [
 		'clean:serve',
 		'concat',
 		'less:default',

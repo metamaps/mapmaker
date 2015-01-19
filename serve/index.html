@@ -104,24 +104,24 @@
 			function start(data) {
 				var topicMappings, synapseMappings;
 
-				map = new Metamaps.Map(data.map);
+				map = new Mapmaker.Map(data.map);
 
-				map.set("topics", new Metamaps.TopicCollection(data.topics));
-	            map.set("synapses", new Metamaps.SynapseCollection(data.synapses));
+				map.set("topics", new Mapmaker.TopicCollection(data.topics));
+	            map.set("synapses", new Mapmaker.SynapseCollection(data.synapses));
 	            
 	            topicMappings = _.where(data.mappings, {category: "Topic"});
-	            map.set("topicMappings", new Metamaps.MappingCollection(topicMappings));
+	            map.set("topicMappings", new Mapmaker.MappingCollection(topicMappings));
 
 	            synapseMappings = _.where(data.mappings, {category: "Synapse"});
-	            map.set("synapseMappings", new Metamaps.MappingCollection(synapseMappings));
+	            map.set("synapseMappings", new Mapmaker.MappingCollection(synapseMappings));
 
 				var config = {};
 				var canvasEl = document.getElementById("mapCanvas");
-				renderer = Metamaps.MapRendererFactory.create(
+				renderer = Mapmaker.MapRendererFactory.create(
 					canvasEl,
 					config,
 					map);
-				$(renderer).on(Metamaps.MapRenderer.events.message, function (event, message) {
+				$(renderer).on(Mapmaker.MapRenderer.events.message, function (event, message) {
 						console.log(message);
 				});
 			};
