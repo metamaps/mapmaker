@@ -22,7 +22,6 @@
   "dependencies": {
     "backbone": "1.0.0",
     "underscore": "1.4.4",
-    "snap.svg": "~0.3.0",
     "Countable": "~2.1.0",
     "typeahead.js": "0.9.3",
     "socket.io-client": "0.9.11",

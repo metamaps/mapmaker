@@ -45,12 +45,12 @@
 		<script type="text/template" id="topicCardTemplate">
     <div class="CardOnGraph {{hasAttachment}}" id="topic_{{id}}">
         <span class="title"> 
-            <div class="titleWrapper" id="titleActivator">      
+            <div class="titleWrapper titleActivator">      
               <span class="best_in_place best_in_place_name"                      
                     data-url="/topics/{{id}}"                                     
                     data-object="topic"                                           
                     data-attribute="name"
-                    data-activator="#titleActivator"           
+                    data-activator=".titleActivator"           
                     data-type="textarea">{{name}}</span>
             </div> 
         </span>
