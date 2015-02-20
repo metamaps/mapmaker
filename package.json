@@ -1,6 +1,12 @@
 {
   "name": "metamaps-map-renderer",
   "version": "0.0.1",
+  "scripts": {
+    "serve": "grunt serve && node ./lib/server/server.js"
+  },
+  "dependencies": {
+    "socket.io": "^0.9.12"
+  },
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-clean": "~0.5.0",

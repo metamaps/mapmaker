@@ -1,0 +1,48 @@
+.collabCompass {
+    position:fixed;
+    top:50%;
+    left:50%;
+    z-index: 1;
+}
+
+.collabCompass:hover p {
+    display: block;
+}
+.collabCompass p {
+    display: none;
+    background-color: #4fb5c0;
+    color: #FFFFFF;
+    padding: 2px 8px 2px 8px; 
+    position: absolute;
+    top: 7px;
+    left:28px;
+    z-index: 1;
+    font-size: 14px;
+    line-height: 14px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    white-space: nowrap;
+}
+.collabCompass.labelLeft p {
+    left: auto;
+    right: 28px;
+}
+.collabCompass img {
+    border-radius: 16px;
+    border: 2px solid #4fb5c0;
+    z-index: 2;
+    position: relative;
+}
+.compassArrow {
+    display: none;
+    background-repeat: no-repeat;
+    background-image: url(/img/compass_arrow.png);
+    width: 48px;
+    height: 32px;
+    position: absolute;
+    top: 0;
+    left: 16px;
+    background-position: 16px 8px;
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+} 

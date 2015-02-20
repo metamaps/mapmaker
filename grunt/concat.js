@@ -9,7 +9,7 @@ module.exports = {
 			'bower_components/underscore/underscore.js',
 			'bower_components/backbone/backbone.js',
 			'bower_components/Countable/Countable.js',
-			'bower_components/socket.io-client/socket.io.js',
+			'bower_components/socket.io-client/dist/socket.io.js',
 			'bower_components/typeahead.js/dist/typeahead.bundle.min.js',
 			'bower_components/CloudCarousel/cloudcarousel.js',
 			'bower_components/embedly/embedly.js',
