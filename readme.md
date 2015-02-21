@@ -37,4 +37,6 @@ Run the realtime server
 node ./lib/server/server.js
 ```
 
+currently, the only way to see your code changes as you develop, depending where they were: the server, or other code, both require killing the process and restarting... CTRL+C will kill either process. 
+
 Licensed under an AGPL open source licence
