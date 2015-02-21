@@ -1,9 +1,10 @@
 {
   "name": "metamaps-map-renderer",
   "version": "0.0.1",
-  "scripts": {
-    "serve": "grunt serve && node ./lib/server/server.js"
-  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:connoropolous/mapmaker.git"
+    },
   "dependencies": {
     "socket.io": "^0.9.12"
   },
