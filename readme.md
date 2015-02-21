@@ -13,6 +13,7 @@ or via cmd line
 ```
 sudo apt-get install nodejs -y
 sudo apt-get install npm -y
+ln -fs /usr/bin/nodejs /usr/bin/node
 ```
 
 Install bower for front-end dependencies

@@ -124,6 +124,7 @@
 					canvasEl,
 					config,
 					map);
+        renderer.view.Realtime.init();
 				$(renderer).on(Mapmaker.MapRenderer.events.message, function (event, message) {
 						console.log(message);
 				});
@@ -131,10 +132,10 @@
 
 			$(document).ready(function() {
 				$.ajax({
-		            url: "/json/maps/map1113.json",
-		            success: start
-		        });
+          url: "/json/maps/map1113.json",
+          success: start
 		    });
+		  });
 		</script>
 	</body>
 </html>
