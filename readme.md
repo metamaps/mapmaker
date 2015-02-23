@@ -1,3 +1,6 @@
+WORKFLOW TODO
+- enable live reload so that we don't need to always be killing the process and restarting it. part of doing this will be modifying the /grunt/aliases.js file so that serve and/or serveNoOpen don't concat all the code into one file, and index.html just included them all separately.
+
 == Mapmaker JS Library == 
 
 To get this going::
@@ -36,5 +39,7 @@ Run the realtime server
 ```
 node ./lib/server/server.js
 ```
+
+currently, the only way to see your code changes as you develop, depending where they were: the server, or other code, both require killing the process and restarting... CTRL+C will kill either process. 
 
 Licensed under an AGPL open source licence
