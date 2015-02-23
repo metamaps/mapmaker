@@ -1,3 +1,5 @@
+Licensed under an AGPL open source licence
+
 # Mapmaker JS Library #
 
 WORKFLOW TODO
@@ -26,7 +28,7 @@ canvasEl = document.getElementById("mapCanvas");
 config = {};
 maker = Mapmaker.buildMaker.create(canvasEl, config, map);
 
-...
+maker.exportImage();
 ```
 
 ## GETTING SET UP TO DEV ##
@@ -70,4 +72,31 @@ node ./lib/server/server.js
 
 currently, the only way to see your code changes as you develop, depending where they were: the server, or other code, both require killing the process and restarting... CTRL+C will kill either process. 
 
-Licensed under an AGPL open source licence
+## Ideas for API of sudmodules ##
+
+#### mapView ####
+- ACCEPTS: ```map```, ```config```, ```$parent```
+
+#### TopicCard ####
+- ACCEPTS: ```mapView```, ```topic```
+- Public Api
+    - show
+    - hide
+
+#### SynapseCard ####
+- ACCEPTS: ```mapView```, ```synapse```
+- Public Api
+    - show
+    - hide
+
+#### MapInfoBox ####
+- ACCEPTS: ```mapView```, ```map```
+- Public Api
+    - show
+    - hide
+
+#### Card ####
+- ACCEPTS: ```mapView```, ```topic```
+- Public Api
+    - show
+    - hide
