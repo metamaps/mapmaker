@@ -41,8 +41,8 @@ module.exports = {
 			'lib/modules/jit.js',
 			'lib/modules/realtime.js',
 			'lib/modules/visualize.js',
-			'lib/renderer.js',
-			'lib/factory.js',
+			'lib/maker.js',
+			'lib/buildMaker.js',
 			'lib/models/collections.js',
 		],
 		dest: 'dist/metamaps_renderer.js'

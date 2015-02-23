@@ -102,7 +102,7 @@
 		<script src="js/bower_components/jquery/jquery.js"></script>
 		<script src="js/metamaps_renderer.js"></script>
 		<script>
-			var map, renderer;
+			var map, maker;
 
 			function start(data) {
 				var topicMappings, synapseMappings;
@@ -120,19 +120,19 @@
 
 				var config = {};
 				var canvasEl = document.getElementById("mapCanvas");
-				renderer = Mapmaker.MapRendererFactory.create(
+				maker = Mapmaker.buildMaker.create(
 					canvasEl,
 					config,
 					map);
-        renderer.view.Realtime.init();
-				$(renderer).on(Mapmaker.MapRenderer.events.message, function (event, message) {
+        maker.view.Realtime.init();
+				$(maker).on(Mapmaker.Maker.events.message, function (event, message) {
 						console.log(message);
 				});
 			};
 
 			$(document).ready(function() {
 				$.ajax({
-          url: "/json/maps/map1113.json",
+          url: "/json/maps/map1103.json",
           success: start
 		    });
 		  });
