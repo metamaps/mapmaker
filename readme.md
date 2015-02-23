@@ -95,9 +95,3 @@ currently, the only way to see your code changes as you develop, depending where
 - Public Api
     - show
     - hide
-
-#### Card ####
-- ACCEPTS: ```mapView```, ```topic```
-- Public Api
-    - show
-    - hide
