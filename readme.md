@@ -29,6 +29,7 @@ config = {};
 maker = Mapmaker.buildMaker.create(canvasEl, config, map);
 
 maker.exportImage();
+maker.save();
 ```
 
 ## GETTING SET UP TO DEV ##
