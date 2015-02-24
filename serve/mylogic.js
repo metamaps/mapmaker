@@ -29,8 +29,8 @@ function roomListener(roomName, otherPeers) {
 function performCall(easyrtcid) {
     easyrtc.call(
        easyrtcid,
-       function(easyrtcid) { console.log("completed call to " + easyrtcid);
-       function(errorMessage) { console.log("err:" + errorMessage);
+       function(easyrtcid) { console.log("completed call to " + easyrtcid); },
+       function(errorMessage) { console.log("err:" + errorMessage); },
        function(accepted, bywho) {
           console.log((accepted?"accepted":"rejected")+ " by " + bywho);
        }
