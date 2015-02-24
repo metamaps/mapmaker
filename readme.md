@@ -52,7 +52,7 @@ ln -fs /usr/bin/nodejs /usr/bin/node
 
 Install bower for front-end dependencies, grunt for a local server
 ```
-npm install -g bower grunt
+npm install -g bower grunt-cli
 ```
 
 Actually download the front-end, and server dependencies
