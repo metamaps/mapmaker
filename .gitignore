@@ -8,3 +8,5 @@ css/
 deploy/
 .grunt/
 bower_components/
+nohup.out
+npm-debug.log
