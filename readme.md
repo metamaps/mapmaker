@@ -50,9 +50,9 @@ sudo apt-get install npm -y
 ln -fs /usr/bin/nodejs /usr/bin/node
 ```
 
-Install bower for front-end dependencies
+Install bower for front-end dependencies, grunt for a local server
 ```
-npm install -g bower
+npm install -g bower grunt
 ```
 
 Actually download the front-end, and server dependencies
