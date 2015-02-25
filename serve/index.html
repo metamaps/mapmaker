@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="http://localhost:5002/easyrtc/easyrtc.css" />
         <script src="http://localhost:5002/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="http://localhost:5002/easyrtc/easyrtc.js"></script>
-        <link rel="stylesheet" type="text/css" href="chat.css"></script>
+        <link rel="stylesheet" type="text/css" href="css/chat-client.css"></script>
 		<style>
 			#mapCanvas {
 				border   : 1px solid black;
@@ -142,19 +142,8 @@
 		</script>
         <div id="easyRTCWrapper">
         </div><!-- easyRTCWrapper -->
-       
-        <button onclick="connectChat(0, 'devvmh')">Connect Text Chat</button>
-        <div id="sendMessageArea">
-          <div id="iam">Obtaining ID...</div>
-          <textarea id="sendMessageText"></textarea>
-          <div id="otherClients"></div>
-        </div>
-        <div id="receiveMessageArea">
-          Received Messages:
-          <div id="conversation"></div>
-        </div>
 	</body>
     <footer>
-        <script type="text/javascript" src="chat.js"></script>
+        <script type="text/javascript" src="js/chat-client.js"></script>
     </footer>
 </html>

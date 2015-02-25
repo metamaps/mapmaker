@@ -8,7 +8,21 @@ module.exports = {
 			flatten: true,
 			filter: 'isFile'
 		}, {
+			src: 'chat/chat-client.js',
+			expand: true,
+			dest: 'serve/js/',
+			nonull: true,
+			flatten: true,
+			filter: 'isFile'
+		}, {
 			src: 'css/*',
+			expand: true,
+			dest: 'serve/css/',
+			nonull: true,
+			flatten: true,
+			filter: 'isFile'
+		}, {
+			src: 'chat/chat-client.css',
 			expand: true,
 			dest: 'serve/css/',
 			nonull: true,
