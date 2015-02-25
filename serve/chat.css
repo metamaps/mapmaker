@@ -1,0 +1,23 @@
+#easyRTCWrapper {
+    border: 1px solid gray;
+    width: 300px;
+}
+
+div#self-wrapper,
+div#caller-wrapper { 
+    position: relative;
+    float: left;
+    width: 300px;
+}
+
+div#self-wrapper {
+     border-bottom: 1px solid gray;
+}
+
+video#self {
+}
+
+
+div#otherClients {
+  float: right;   
+}

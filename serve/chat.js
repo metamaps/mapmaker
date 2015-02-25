@@ -1,19 +1,38 @@
-function startChat() {
-  $('#startVideoButton').html('Stop Video Chat');
+jQuery('document').ready(function() {
+    setUpButton('open');
+});
+
+function setUpButton(op) {
+  if (op === 'open') {
+    $('#easyRTCWrapper').append('<button id="videoChatButton">Open Video Chat</button>');
+    $('#videoChatButton').click(function() {
+      openChat(0, 'devvmh');
+    });
+  } else if (op === 'close') {
+    $('#videoChatButton').html('Close Video Chat');
+    $('#videoChatButton').unbind('click');
+    $('#videoChatButton').click(function() {
+      closeChat();
+    });
+  }
+}//setUpButton
+
+function openChat(mapid, userid) {
+  setUpButton('close');
   createHTMLObjects();
   easyrtc.setSocketUrl("//localhost:5002");
   easyrtc.setRoomOccupantListener( roomListener);
-  easyrtc.easyApp("Company_Chat_Line", "self", ["caller"],
+  easyrtc.easyApp("videochat_mapid_" + mapid, "self", ["caller"],
     function(myId) {
       console.log("My easyrtcid is " + myId);
     }
   );
 }
 
-function stopChat() {
-  $('#startVideoButton').html('Start Video Chat');
-  destroyHTMLObjects();
+function closeChat() {
   easyrtc.disconnect();
+  destroyHTMLObjects();
+  setUpButton('open');
 }
 
 function destroyHTMLObjects() {
@@ -21,16 +40,11 @@ function destroyHTMLObjects() {
 }
 
 function createHTMLObjects() {
-  $('#easyRTCWrapper').html(' \
-            <div style="position:relative;float:left;width:300px"> \
-               self \
-               <video  style="float:left" id="self" width="300" height="200" muted="muted"></video> \
-            </div> \
-          <div style="position:relative;float:left;width:300px"> \
-              caller \
-              <video id="caller" width="300" height="200"></video> \
-          </div> \
-          <div id="otherClients">other clients</div>');
+  $('#easyRTCWrapper').append('<div id="otherClients" />');
+  $('#easyRTCWrapper').append('<div id="self-wrapper" />');
+  $('#easyRTCWrapper').append('<div id="caller-wrapper" />');
+  $('#self-wrapper').append('<video id="self" width="60" height="40" muted="muted" />');
+  $('#caller-wrapper').append('<video id="caller" width="300" height="200"/>');
 }
 
 function roomListener(roomName, otherPeers) {

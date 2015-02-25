@@ -1,14 +1,13 @@
 <!doctype html>
 <html>
 	<head>
-        <!-- easyrtc js & css -->
-        <link rel="stylesheet" type="text/css" href="http://localhost:5002/easyrtc/easyrtc.css" />
-        <script src="http://localhost:5002/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="http://localhost:5002/easyrtc/easyrtc.js"></script>
-        <script type="text/javascript" src="chat.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="css/metamapsMapRender.css" />
 		<link rel="stylesheet" type="text/css" href="js/bower_components/famous/dist/famous.css" />
+        <link rel="stylesheet" type="text/css" href="http://localhost:5002/easyrtc/easyrtc.css" />
+        <script src="http://localhost:5002/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="http://localhost:5002/easyrtc/easyrtc.js"></script>
+        <link rel="stylesheet" type="text/css" href="chat.css"></script>
 		<style>
 			#mapCanvas {
 				border   : 1px solid black;
@@ -23,9 +22,6 @@
 				right    : 0px;
 				width    : 140px;
 			}
-            #easyRTCWrapper, #easyRTCWrapper div {
-                border: 1px solid gray;
-            }
 		</style>
 	</head>
 	<body>
@@ -144,9 +140,10 @@
 		    });
 		  });
 		</script>
-
-        <button id="videoChatButton" onclick="startChat()">Start Video Chat</button>
         <div id="easyRTCWrapper">
         </div><!-- easyRTCWrapper -->
 	</body>
+    <footer>
+        <script type="text/javascript" src="chat.js"></script>
+    </footer>
 </html>
