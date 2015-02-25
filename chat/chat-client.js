@@ -81,18 +81,22 @@ function openVideo(mapid, userid) {
   );
 
   var roomName = easyrtc.roomData.default.roomName;
-  var occupantsIndexed = easyrtc.getRoomOccupantsAsArray(roomName);
-  var occupants = array_flip(occupantsIndexed);
+  var occupants = getOtherOccupants();
   occupantChangeListener(roomName, occupants);
 }
 
-function array_flip(array_to_flip) {
-  var new_array = {};
-  $.each(array_to_flip, function(index, element) {
-    new_array[element] = index;
+function getOtherOccupants() {
+  var roomName = easyrtc.roomData.default.roomName;
+  var occupantsIndexed = easyrtc.getRoomOccupantsAsArray(roomName);
+  var occupants = {};
+  //index array with element names. Don't include self.
+  $.each(occupantsIndexed, function(index, element) {
+    if (element !== window.selfEasyrtcid) {
+      occupants[element] = element;
+    }//if
   });
-  return new_array;
-}//array_flip
+  return occupants;
+}//getOtherOccupants
 
 function closeVideo() {
   window.videoEnabled = false;
@@ -127,20 +131,25 @@ function chatRoomListener(roomName, occupants) {
     otherClientDiv.removeChild(otherClientDiv.lastChild);
   }
  
+  //for loop runs 0, 1, or 2 times, MAX, because of continue; and break; statements
   for(var easyrtcid in occupants) {
     if (easyrtcid === window.selfEasyrtcid) {
       continue;
     }//if
     var button = document.createElement("button");
-    button.onclick = function(easyrtcid) {
-      return function() {
-        sendStuffWS(easyrtcid);
-      };
-    }(easyrtcid);
-    var label = document.createTextNode("Send to " + easyrtc.idToName(easyrtcid));
+    button.onclick = function() {
+        sendStuffWS("all");
+    };
+    $('#sendMessageText').keyup(function(e) {
+      if (e.keyCode === 13) {
+        sendStuffWS("all");
+      }//if
+    });
+    
+    var label = document.createTextNode("Send");
     button.appendChild(label);
- 
     otherClientDiv.appendChild(button);
+    break;
   }
   if( !otherClientDiv.hasChildNodes() ) {
     otherClientDiv.innerHTML = "<em>Nobody else logged in to talk to...</em>";
@@ -193,8 +202,18 @@ function sendStuffWS(otherEasyrtcid) {
   if(text.replace(/\s/g, "").length === 0) { // Don"t send just whitespace
     return;
   }
- 
-  easyrtc.sendDataWS(otherEasyrtcid, "message",  text);
+
+  if (otherEasyrtcid === "all") {
+    //send to the whole room
+    for (easyrtcid in getOtherOccupants()) {
+      easyrtc.sendDataWS(easyrtcid, "message",  text);
+    }
+  } else {
+    //send to one person
+    easyrtc.sendDataWS(otherEasyrtcid, "message",  text);
+  }//if
+
+  //clear elements
   addToConversation("Me", "message", text);
   document.getElementById("sendMessageText").value = "";
 }
