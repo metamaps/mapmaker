@@ -36,7 +36,3 @@ function performCall(easyrtcid) {
        }
     );
 }
-
-jQuery(document).ready(function() {
-  my_init();
-});

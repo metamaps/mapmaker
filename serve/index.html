@@ -2,9 +2,9 @@
 <html>
 	<head>
         <!-- easyrtc js & css -->
-        <link rel="stylesheet" type="text/css" href="/easyrtc/easyrtc.css" />
-        <script src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
+        <link rel="stylesheet" type="text/css" href="js/bower_components/easyrtc/api/easyrtc.css" />
+        <script src="socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="js/bower_components/easyrtc/api/easyrtc.js"></script>
         <script type="text/javascript" src="mylogic.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="css/metamapsMapRender.css" />
@@ -28,7 +28,7 @@
             }
 		</style>
 	</head>
-	<body>
+	<body onload="my_init()">
 		<div id="mapCanvas"></div>
 		<div id="controls">
 			<div>

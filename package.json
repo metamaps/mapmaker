@@ -6,7 +6,9 @@
     "url": "git@github.com:connoropolous/mapmaker.git"
     },
   "dependencies": {
-    "socket.io": "^0.9.12"
+    "socket.io": "^0.9.12",
+    "easyrtc": "^1.0.7",
+    "express": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
