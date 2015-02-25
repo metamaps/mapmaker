@@ -1,0 +1,10 @@
+{
+  "name": "metamaps_chat",
+  "description": "providing real-time chat for metamaps instances",
+  "version": "0.0.1",
+  "dependencies": {
+    "easyrtc"   : "1.0.x",
+    "socket.io" : "0.9.x",
+    "express"   : "*"
+  }
+}

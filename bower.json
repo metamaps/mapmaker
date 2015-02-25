@@ -29,8 +29,6 @@
     "embedly": "https://github.com/Connoropolous/embedly.git",
     "famous": "~0.3.4",
     "hogan": "https://github.com/Connoropolous/Hogan.git",
-    "easyrtc": "~1.0.7",
-    "express": "*"
   },
   "devDependencies": {
     "jquery": "1.9.0"

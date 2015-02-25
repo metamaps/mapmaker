@@ -2,10 +2,10 @@
 <html>
 	<head>
         <!-- easyrtc js & css -->
-        <link rel="stylesheet" type="text/css" href="js/bower_components/easyrtc/api/easyrtc.css" />
-        <script src="socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="js/bower_components/easyrtc/api/easyrtc.js"></script>
-        <script type="text/javascript" src="mylogic.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://localhost:5002/easyrtc/easyrtc.css" />
+        <script src="http://localhost:5002/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="http://localhost:5002/easyrtc/easyrtc.js"></script>
+        <script type="text/javascript" src="chat.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="css/metamapsMapRender.css" />
 		<link rel="stylesheet" type="text/css" href="js/bower_components/famous/dist/famous.css" />
@@ -28,7 +28,7 @@
             }
 		</style>
 	</head>
-	<body onload="my_init()">
+	<body>
 		<div id="mapCanvas"></div>
 		<div id="controls">
 			<div>
@@ -145,16 +145,8 @@
 		  });
 		</script>
 
+        <button id="videoChatButton" onclick="startChat()">Start Video Chat</button>
         <div id="easyRTCWrapper">
-            <div style="position:relative;float:left;width:300px">
-               self
-               <video  style="float:left" id="self" width="300" height="200" muted="muted"></video>
-            </div>
-          <div style="position:relative;float:left;width:300px">
-              caller
-              <video id="caller" width="300" height="200"></video>
-          </div>
-          <div id="otherClients">other clients</div>
         </div><!-- easyRTCWrapper -->
 	</body>
 </html>

@@ -1,10 +1,36 @@
-function my_init() {
+function startChat() {
+  $('#startVideoButton').html('Stop Video Chat');
+  createHTMLObjects();
+  easyrtc.setSocketUrl("//localhost:5002");
   easyrtc.setRoomOccupantListener( roomListener);
   easyrtc.easyApp("Company_Chat_Line", "self", ["caller"],
     function(myId) {
       console.log("My easyrtcid is " + myId);
     }
   );
+}
+
+function stopChat() {
+  $('#startVideoButton').html('Start Video Chat');
+  destroyHTMLObjects();
+  easyrtc.disconnect();
+}
+
+function destroyHTMLObjects() {
+  $('#easyRTCWrapper').html('');
+}
+
+function createHTMLObjects() {
+  $('#easyRTCWrapper').html(' \
+            <div style="position:relative;float:left;width:300px"> \
+               self \
+               <video  style="float:left" id="self" width="300" height="200" muted="muted"></video> \
+            </div> \
+          <div style="position:relative;float:left;width:300px"> \
+              caller \
+              <video id="caller" width="300" height="200"></video> \
+          </div> \
+          <div id="otherClients">other clients</div>');
 }
 
 function roomListener(roomName, otherPeers) {
