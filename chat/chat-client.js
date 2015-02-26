@@ -1,3 +1,5 @@
+mapid = 9999;
+
 jQuery('document').ready(function() {
     $('#easyRTCWrapper').append('<div id="chat-wrapper"></div>');
     $('#easyRTCWrapper').append('<div id="video-wrapper"></div>');
@@ -8,7 +10,7 @@ function setUpChatButton(op) {
   if (op === 'open') {
     $('#chat-wrapper').append('<button id="chat-button">Open Chat</button>');
     $('#chat-button').click(function() {
-      openChat(0, 'devvmh');
+      openChat('devvmh');
     });
   } else if (op === 'close') {
     $('#chat-button').html('Close Chat');
@@ -23,7 +25,7 @@ function setUpVideoButton(op) {
   if (op === 'open') {
     $('#video-wrapper').append('<button id="video-button">Open Video</button>');
     $('#video-button').click(function() {
-      openVideo(0, 'devvmh');
+      openVideo('devvmh');
     });
   } else if (op === 'close') {
     $('#video-button').html('Close Video');
@@ -34,7 +36,7 @@ function setUpVideoButton(op) {
   }//if
 }//setUpVideoButton
 
-function openChat(mapid, userid) {
+function openChat(userid) {
   setUpChatButton('close');
   setUpVideoButton('open');
   createChatHTMLObjects();
@@ -42,7 +44,8 @@ function openChat(mapid, userid) {
   easyrtc.setPeerListener(addToConversation);
   easyrtc.setRoomOccupantListener(occupantChangeListener);
   window.chatEnabled = true;
-  easyrtc.connect("easyrtc.instantMessaging_mapid_" + mapid, loginSuccess, loginFailure);
+  easyrtc.joinRoom("Metamaps-Map-" + mapid, null, null, null);
+  easyrtc.connect("Metamaps", loginSuccess, loginFailure);
 }
 
 function createChatHTMLObjects() {
@@ -67,26 +70,33 @@ function closeChat() {
   setUpChatButton('open');
 }
 
-function openVideo(mapid, userid) {
+function openVideo(userid) {
   setUpVideoButton('close');
   createVideoHTMLObjects();
 
   //listeners are already set up; just enable this flag
   window.videoEnabled = true;
 
-  easyrtc.easyApp("videochat_mapid_" + mapid, "self", ["caller"],
+  easyrtc.easyApp("Metamaps", "self", ["caller"],
     function(myId) {
       console.log("My easyrtcid is " + myId);
     }
   );
 
-  var roomName = easyrtc.roomData.default.roomName;
-  var occupants = getOtherOccupants();
+  //optionally could use:
+  //for (firstRoom in easyrtc.roomData) break;
+  //var roomName = firstRoom.roomName;
+
+  //instead just do the name manually
+  var roomName = "Metamaps-Map-" + mapid;
+  var occupants = getOtherOccupants(roomName);
   occupantChangeListener(roomName, occupants);
 }
 
-function getOtherOccupants() {
-  var roomName = easyrtc.roomData.default.roomName;
+function getOtherOccupants(roomName) {
+  if (roomName === null) {
+    roomName = "Metamaps-Map-" + mapid;
+  }//if
   var occupantsIndexed = easyrtc.getRoomOccupantsAsArray(roomName);
   var occupants = {};
   //index array with element names. Don't include self.
