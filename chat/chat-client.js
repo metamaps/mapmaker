@@ -5,6 +5,7 @@ jQuery('document').ready(function() {
     $('#easyRTCWrapper').append('<div id="chat-wrapper"></div>');
     $('#easyRTCWrapper').append('<div id="video-wrapper"></div>');
     setUpChatButton('open');
+    openChat('devvmh');
 });
 
 function setUpChatButton(op) {
