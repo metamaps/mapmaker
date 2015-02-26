@@ -233,7 +233,7 @@ function videoRoomListener(roomName, occupants) {
         }(easyrtcid);
 
         var users = easyrtc.roomData[roomName];
-        label = document.createTextNode(easyrtcid);
+        label = document.createTextNode(easyrtcidToUsername(easyrtcid));
         button.appendChild(label);
         otherClientDiv.appendChild(button);
     }
@@ -252,7 +252,9 @@ function performCall(easyrtcid) {
 
 function easyrtcidToUsername(easyrtcid) {
   var from = "Unknown Sender";
-  var userList = easyrtc.roomData[roomName].clientListDelta.updateClient;
+  var roomData = easyrtc.roomData[roomName];
+  var userList = roomData.clientListDelta.updateClient;
+
   if (userList.hasOwnProperty(easyrtcid)) {
     var user = userList[easyrtcid];
     if (user.hasOwnProperty("username")) {
