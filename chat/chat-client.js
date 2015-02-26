@@ -78,11 +78,24 @@ function openVideo(userid) {
   //listeners are already set up; just enable this flag
   window.videoEnabled = true;
 
-  myEasyApp("Metamaps", "self", ["caller"],
-    function(myId) {
-      console.log("My easyrtcid is " + myId);
-    }
-  );
+  //handle incoming/outgoing video calls
+  myEasyAppBody("self", ["caller"]);
+
+  //create a local media stream, plus include success and failure handlers
+  easyrtc.initMediaSource(
+    function() {
+      easyrtc.setVideoObjectSrc(document.getElementById("self"), easyrtc.getLocalStream());
+    },
+    function(errorCode, errorText) {
+      if (onFailure) {
+        onFailure(easyrtc.errCodes.MEDIA_ERR, errorText);
+      }
+      else {
+        easyrtc.showError(easyrtc.errCodes.MEDIA_ERR, errorText);
+      }
+    },
+    null // default stream
+    );
 
   //optionally could use:
   //for (firstRoom in easyrtc.roomData) break;
@@ -272,13 +285,6 @@ function loginFailure(errorCode, message) {
         var refreshPane = 0;
         var onCall = null, onHangup = null;
 
-        /** @private */
-        /* Do you want the giant X for close buttons? */
-        var autoAddCloseButtons = true;
-        this.dontAddCloseButtons = function() {
-            autoAddCloseButtons = false;
-        };
-
         if (!videoIdsP) {
             videoIdsP = [];
         }
@@ -348,6 +354,27 @@ function loginFailure(errorCode, message) {
             }
         }
 
+        function addControls() {
+            var addControls, parentDiv, closeButton, i;
+
+            addControls = function(video) {
+                parentDiv = video.parentNode;
+                video.dataset.caller = "";
+                closeButton = document.createElement("div");
+                closeButton.className = "easyrtc_closeButton";
+                closeButton.onclick = function() {
+                    if (video.dataset.caller) {
+                        easyrtc.hangup(video.dataset.caller);
+                        hideVideo(video);
+                        video.dataset.caller = "";
+                    }
+                };
+                parentDiv.appendChild(closeButton);
+            };
+            for (i = 0; i < numPEOPLE; i++) {
+                addControls(getIthVideo(i));
+            }
+        }//addControls
 
         self.getIthCaller = function(i) {
             if (i < 0 || i > videoIdsP.length) {
@@ -455,29 +482,7 @@ function loginFailure(errorCode, message) {
             }
             video.dataset.caller = caller;
         });
-        (function() {
-            var addControls, parentDiv, closeButton, i;
-            if (autoAddCloseButtons) {
-
-                addControls = function(video) {
-                    parentDiv = video.parentNode;
-                    video.dataset.caller = "";
-                    closeButton = document.createElement("div");
-                    closeButton.className = "easyrtc_closeButton";
-                    closeButton.onclick = function() {
-                        if (video.dataset.caller) {
-                            easyrtc.hangup(video.dataset.caller);
-                            hideVideo(video);
-                            video.dataset.caller = "";
-                        }
-                    };
-                    parentDiv.appendChild(closeButton);
-                };
-                for (i = 0; i < numPEOPLE; i++) {
-                    addControls(getIthVideo(i));
-                }
-            }
-        })();
+        addControls();
         var monitorVideo = null;
         if (videoEnabled && monitorVideoId !== null) {
             monitorVideo = document.getElementById(monitorVideoId);
@@ -492,94 +497,6 @@ function loginFailure(errorCode, message) {
 
     }; //end myEasyAppBody
 
-function myEasyApp(applicationName, monitorVideoId, videoIds, onReady, onFailure) {
-        var gotMediaCallback = null,
-                gotConnectionCallback = null;
-        myEasyAppBody(monitorVideoId, videoIds);
-        self.setGotMedia = function(gotMediaCB) {
-            gotMediaCallback = gotMediaCB;
-        };
-
-        /** Sets an event handler that gets called when a connection to the signaling
-         * server has or has not been made. Can only be called after calling easyrtc.easyApp.
-         * @param {Function} gotConnectionCB has the signature (gotConnection, errorText)
-         * @example
-         *    easyrtc.setGotConnection( function(gotConnection, errorText){
-         *        if( gotConnection ){
-         *            console.log("Successfully connected to signaling server");
-         *        }
-         *        else{
-         *            console.log("Failed to connect to signaling server because: " + errorText);
-         *        }
-         *    });
-         */
-        self.setGotConnection = function(gotConnectionCB) {
-            gotConnectionCallback = gotConnectionCB;
-        };
-        var nextInitializationStep;
-        nextInitializationStep = function(/* token */) {
-            if (gotConnectionCallback) {
-                gotConnectionCallback(true, "");
-            }
-            onReady(self.myEasyrtcid);
-        };
-        function postGetUserMedia() {
-            if (gotMediaCallback) {
-                gotMediaCallback(true, null);
-            }
-            if (monitorVideoId !== null) {
-                easyrtc.setVideoObjectSrc(document.getElementById(monitorVideoId), easyrtc.getLocalStream());
-            }
-            function connectError(errorCode, errorText) {
-                if (gotConnectionCallback) {
-                    gotConnectionCallback(false, errorText);
-                }
-                else if (onFailure) {
-                    onFailure(self.errCodes.CONNECT_ERR, errorText);
-                }
-                else {
-                    self.showError(self.errCodes.CONNECT_ERR, errorText);
-                }
-            }
-
-            easyrtc.connect(applicationName, nextInitializationStep, connectError);
-        }
-
-        //
-        // fetches a stream by name. Treat a null/undefined streamName as "default".
-        //
-        function getLocalMediaStreamByName(streamName) {
-            if (!streamName) {
-                streamName = "default";
-            }
-            if (namedLocalMediaStreams.hasOwnProperty(streamName)) {
-                return namedLocalMediaStreams[streamName];
-            }
-            else {
-                return null;
-            }
-        }
-
-        var stream = getLocalMediaStreamByName(null);
-        if (stream) {
-            postGetUserMedia();
-        }
-        else {
-            easyrtc.initMediaSource(
-                    postGetUserMedia,
-                    function(errorCode, errorText) {
-                        if (gotMediaCallback) {
-                            gotMediaCallback(false, errorText);
-                        }
-                        else if (onFailure) {
-                            onFailure(easyrtc.errCodes.MEDIA_ERR, errorText);
-                        }
-                        else {
-                            easyrtc.showError(easyrtc.errCodes.MEDIA_ERR, errorText);
-                        }
-                    },
-                    null // default stream
-                    );
-        }
-    }; //end myEasyApp
+function postGetUserMedia(monitorVideoId) {
+}//postGetUserMedia
 
