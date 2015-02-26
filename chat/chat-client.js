@@ -1,4 +1,7 @@
 mapid = 9999;
+roomName = "Metamaps-Map-" + mapid;
+var randomNumber = Math.floor(Math.random() * 90) + 10;
+userid = "devvmh" + randomNumber.toString();
 
 //can these be variables inside Metamaps.Chat?
 var videoIds = ["caller"];
@@ -10,14 +13,14 @@ jQuery('document').ready(function() {
     $('#easyRTCWrapper').append('<div id="chat-wrapper"></div>');
     $('#easyRTCWrapper').append('<div id="video-wrapper"></div>');
     setUpChatButton('open');
-    openChat('devvmh');
+    openChat();
 });
 
 function setUpChatButton(op) {
   if (op === 'open') {
     $('#chat-wrapper').append('<button id="chat-button">Open Chat</button>');
     $('#chat-button').click(function() {
-      openChat('devvmh');
+      openChat();
     });
   } else if (op === 'close') {
     $('#chat-button').html('Close Chat');
@@ -32,7 +35,7 @@ function setUpVideoButton(op) {
   if (op === 'open') {
     $('#video-wrapper').append('<button id="video-button">Open Video</button>');
     $('#video-button').click(function() {
-      openVideo('devvmh');
+      openVideo();
     });
   } else if (op === 'close') {
     $('#video-button').html('Close Video');
@@ -43,17 +46,31 @@ function setUpVideoButton(op) {
   }//if
 }//setUpVideoButton
 
-function openChat(userid) {
+function openChat() {
   setUpChatButton('close');
   setUpVideoButton('open');
   createChatHTMLObjects();
+  window.chatEnabled = true;
+
   easyrtc.setSocketUrl("//localhost:5002");
+  easyrtc.joinRoom(roomName, null, null, null)
+  easyrtc.setUsername(userid);
+
   easyrtc.setPeerListener(addToConversation);
   easyrtc.setRoomOccupantListener(occupantChangeListener);
-  window.chatEnabled = true;
-  easyrtc.joinRoom("Metamaps-Map-" + mapid, null, null, null)
+
   easyrtc.connect("Metamaps", loginSuccess, loginFailure);
 }
+
+function loginSuccess(easyrtcid) {
+  window.selfEasyrtcid = easyrtcid;
+  document.getElementById("iam").innerHTML = "I am " + easyrtc.username;
+}
+ 
+function loginFailure(errorCode, message) {
+  easyrtc.showError(errorCode, message);
+}
+
 
 function createChatHTMLObjects() {
   $('#easyRTCWrapper').append('<div id="chat-wrapper"></div>');
@@ -77,7 +94,7 @@ function closeChat() {
   setUpChatButton('open');
 }
 
-function openVideo(userid) {
+function openVideo() {
   setUpVideoButton('close');
   createVideoHTMLObjects();
 
@@ -121,12 +138,7 @@ function openVideo(userid) {
     null // default stream
     );
 
-  //optionally could use:
-  //for (firstRoom in easyrtc.roomData) break;
-  //var roomName = firstRoom.roomName;
-
   //instead just do the name manually
-  var roomName = "Metamaps-Map-" + mapid;
   var occupants = getOtherOccupants(roomName);
   occupantChangeListener(roomName, occupants);
 }
@@ -220,6 +232,7 @@ function videoRoomListener(roomName, occupants) {
             }
         }(easyrtcid);
 
+        var users = easyrtc.roomData[roomName];
         label = document.createTextNode(easyrtcid);
         button.appendChild(label);
         otherClientDiv.appendChild(button);
@@ -237,12 +250,31 @@ function performCall(easyrtcid) {
     );
 }
 
+function easyrtcidToUsername(easyrtcid) {
+  var from = "Unknown Sender";
+  var userList = easyrtc.roomData[roomName].clientListDelta.updateClient;
+  if (userList.hasOwnProperty(easyrtcid)) {
+    var user = userList[easyrtcid];
+    if (user.hasOwnProperty("username")) {
+      from = user.username;
+    }//if
+  }//if
+
+  return from;
+}//easyrtcidToUsername
+
 function addToConversation(who, msgType, content) {
+  if (who === "Me") {
+    from = "Me";
+  } else {
+    from = easyrtcidToUsername(who);
+  }//if
+
   // Escape html special characters, then add linefeeds.
   content = content.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   content = content.replace(/\n/g, "<br />");
   document.getElementById("conversation").innerHTML +=
-  "<b>" + who + ":</b>&nbsp;" + content + "<br />";
+  "<b>" + from + ":</b>&nbsp;" + content + "<br />";
 }
  
 function sendStuffWS(otherEasyrtcid) {
@@ -253,7 +285,7 @@ function sendStuffWS(otherEasyrtcid) {
 
   if (otherEasyrtcid === "all") {
     //send to the whole room
-    for (easyrtcid in getOtherOccupants()) {
+    for (easyrtcid in getOtherOccupants(roomName)) {
       easyrtc.sendDataWS(easyrtcid, "message",  text);
     }
   } else {
@@ -266,15 +298,6 @@ function sendStuffWS(otherEasyrtcid) {
   document.getElementById("sendMessageText").value = "";
 }
  
-function loginSuccess(easyrtcid) {
-  window.selfEasyrtcid = easyrtcid;
-  document.getElementById("iam").innerHTML = "I am " + easyrtcid;
-}
- 
-function loginFailure(errorCode, message) {
-  easyrtc.showError(errorCode, message);
-}
-
 /*
  * VIDEO HELPER FUNCTIONS
  */
