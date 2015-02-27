@@ -1,12 +1,8 @@
-mapid = 9999;
-roomName = "Metamaps-Map-" + mapid;
+//dirty, horrible, rotten, globals
+var mapid = 9999;
+var roomName = "Metamaps-Map-" + mapid;
 var randomNumber = Math.floor(Math.random() * 90) + 10;
-userid = "devvmh" + randomNumber.toString();
-
-//can these be variables inside Metamaps.Chat?
-var videoIds = ["caller"];
-var numPEOPLE = videoIds.length;
-var refreshPane = 0;
+var userid = "devvmh" + randomNumber.toString();
 var monitorVideoId = "self";
 
 jQuery('document').ready(function() {
@@ -14,6 +10,9 @@ jQuery('document').ready(function() {
     $('#easyRTCWrapper').append('<div id="video-wrapper"></div>');
     setUpChatButton('open');
     openChat();
+    $('#controls').remove(); //TODO take this back out, just for simplicity now
+    easyrtc.enableAudio(false);
+    easyrtc.enableCamera(false);
 });
 
 function setUpChatButton(op) {
@@ -32,6 +31,7 @@ function setUpChatButton(op) {
 }//setUpChatButton
 
 function setUpVideoButton(op) {
+  $('#video-wrapper button').remove();
   if (op === 'open') {
     $('#video-wrapper').append('<button id="video-button">Open Video</button>');
     $('#video-button').click(function() {
@@ -50,16 +50,17 @@ function openChat() {
   setUpChatButton('close');
   setUpVideoButton('open');
   createChatHTMLObjects();
-  window.chatEnabled = true;
 
   easyrtc.setSocketUrl("//localhost:5002");
   easyrtc.joinRoom(roomName, null, null, null)
   easyrtc.setUsername(userid);
 
+  easyrtc.connect("Metamaps", loginSuccess, loginFailure);
+
   easyrtc.setPeerListener(addToConversation);
   easyrtc.setRoomOccupantListener(occupantChangeListener);
-
-  easyrtc.connect("Metamaps", loginSuccess, loginFailure);
+  easyrtc.setStreamAcceptor(videoStreamAcceptor);
+  easyrtc.setOnStreamClosed(videoStreamClosedHandler);
 }
 
 function loginSuccess(easyrtcid) {
@@ -73,7 +74,6 @@ function loginFailure(errorCode, message) {
 
 
 function createChatHTMLObjects() {
-  $('#easyRTCWrapper').append('<div id="chat-wrapper"></div>');
   $('#chat-wrapper').append('<div id="sendMessageArea"></div>');
   $('#chat-wrapper').append('<div id="receiveMessageArea"></div>');
   $('#sendMessageArea').append(' \
@@ -98,34 +98,16 @@ function openVideo() {
   setUpVideoButton('close');
   createVideoHTMLObjects();
 
-  //listeners are already set up; just enable this flag
-  window.videoEnabled = true;
+  //addControls();
 
-  //handle incoming/outgoing video calls - adds listeners + controls
-  self.addEventListener("roomOccupants", 
-    function(eventName, eventData) {
-      for (i = 0; i < numPEOPLE; i++) {
-        var video = getIthVideo(i);
-        if (!videoIsFree(video)) {
-          if( !easyrtc.isPeerInAnyRoom(video.dataset.caller)){
-            easyrtc.dataset.caller = null;
-          }//if
-        }//if
-      }//for
-    }//roomOccupantsListener
-  );
-
-  easyrtc.setOnStreamClosed(videoStreamClosedHandler);
-  easyrtc.setAcceptChecker(videoAcceptChecker);
-  easyrtc.setStreamAcceptor(videoStreamAcceptor);
-
-  addControls();
+  easyrtc.enableAudio(true);
+  easyrtc.enableCamera(true);
   muteMonitorVideo();
-
   //create a local media stream, plus include success and failure handlers
   easyrtc.initMediaSource(
     function() {
-      easyrtc.setVideoObjectSrc(document.getElementById(monitorVideoId), easyrtc.getLocalStream());
+      var monitorVideoElement = document.getElementById(monitorVideoId);
+      easyrtc.setVideoObjectSrc(monitorVideoElement, easyrtc.getLocalStream());
     },
     function(errorCode, errorText) {
       if (onFailure) {
@@ -138,9 +120,11 @@ function openVideo() {
     null // default stream
     );
 
-  //instead just do the name manually
+  //call every other person in the room
   var occupants = getOtherOccupants(roomName);
-  occupantChangeListener(roomName, occupants);
+  for (easyrtcid in occupants) {
+    performCall(easyrtcid);
+  }//for
 }
 
 function getOtherOccupants(roomName) {
@@ -159,30 +143,34 @@ function getOtherOccupants(roomName) {
 }//getOtherOccupants
 
 function closeVideo() {
-  window.videoEnabled = false;
   destroyVideoHTMLObjects();
   setUpVideoButton('open');
+  easyrtc.enableAudio(false);
+  easyrtc.enableCamera(false);
 }
 
 function destroyVideoHTMLObjects() {
-  $('#video-wrapper').html('');
+  $('#self-wrapper').remove();
 }
 
 function createVideoHTMLObjects() {
-  $('#video-wrapper').append('<div id="video-other-clients" />');
-  $('#video-wrapper').append('<div id="self-wrapper" />');
-  $('#video-wrapper').append('<div id="caller-wrapper" />');
-  $('#self-wrapper').append('<video id="self" width="60" height="40" muted="muted" />');
-  $('#caller-wrapper').append('<video id="caller" width="300" height="200"/>');
+  $('#video-wrapper').prepend('<div id="self-wrapper"><video id="' + monitorVideoId + '" width="100" height="100" muted="muted" /></div>');
 }
 
 function occupantChangeListener(roomName, occupants) {
-  if (window.chatEnabled) {
-    chatRoomListener(roomName, occupants);
-  }//if
-  if (window.videoEnabled) {
+  chatRoomListener(roomName, occupants);
+
+  //don't open new calls if video isn't activated
+  if ($('#' + monitorVideoId).length > 0) {
     videoRoomListener(roomName, occupants);
   }//if
+
+  $('.caller-div video').each(function() {
+    if(!easyrtc.isPeerInAnyRoom($(this).attr('id'))){
+      alert("removed video element " + $(this).attr('id'));
+      $(this).remove();
+    }//if
+  });//each
 }//occupantChangeListener
  
 function chatRoomListener(roomName, occupants) {
@@ -217,27 +205,22 @@ function chatRoomListener(roomName, occupants) {
 }
 
 function videoRoomListener(roomName, occupants) {
-    var otherClientDiv = document.getElementById('video-other-clients');
-    while (otherClientDiv.hasChildNodes()) {
-        otherClientDiv.removeChild(otherClientDiv.lastChild);
-    }
     for(var easyrtcid in occupants) {
         if (easyrtcid === window.selfEasyrtcid) {
           continue;
         }//if
-        var button = document.createElement('button');
-        button.onclick = function(easyrtcid) {
-            return function() {
-                performCall(easyrtcid);
-            }
-        }(easyrtcid);
 
-        var users = easyrtc.roomData[roomName];
-        label = document.createTextNode(easyrtcidToUsername(easyrtcid));
-        button.appendChild(label);
-        otherClientDiv.appendChild(button);
-    }
-}
+        if ($('#' + easyrtcid).length == 0) {
+          performCall(easyrtcid);
+        }//if
+
+    }//for
+}//videoRoomListener
+
+function newVideoElement(easyrtcid) {
+  $('#video-wrapper').append('<div id="' + easyrtcid + '-wrapper" class="caller-div">' +
+      '<video id="' + easyrtcid + '" width="100" height="100" /></div>');
+}//newVideoElement
 
 function performCall(easyrtcid) {
     easyrtc.call(
@@ -250,26 +233,11 @@ function performCall(easyrtcid) {
     );
 }
 
-function easyrtcidToUsername(easyrtcid) {
-  var from = "Unknown Sender";
-  var roomData = easyrtc.roomData[roomName];
-  var userList = roomData.clientListDelta.updateClient;
-
-  if (userList.hasOwnProperty(easyrtcid)) {
-    var user = userList[easyrtcid];
-    if (user.hasOwnProperty("username")) {
-      from = user.username;
-    }//if
-  }//if
-
-  return from;
-}//easyrtcidToUsername
-
 function addToConversation(who, msgType, content) {
   if (who === "Me") {
     from = "Me";
   } else {
-    from = easyrtcidToUsername(who);
+    from = easyrtc.idToName(who);
   }//if
 
   // Escape html special characters, then add linefeeds.
@@ -304,133 +272,66 @@ function sendStuffWS(otherEasyrtcid) {
  * VIDEO HELPER FUNCTIONS
  */
 
-function validateVideoIds(monitorVideoId, videoIds) {
-    var i;
-    // verify that video ids were not typos.
-    if (monitorVideoId && !document.getElementById(monitorVideoId)) {
-        easyrtc.showError(easyrtc.errCodes.DEVELOPER_ERR, "The monitor video id passed to easyApp was bad, saw " + monitorVideoId);
-        return false;
-    }
-
-    for (i in videoIds) {
-        if (!videoIds.hasOwnProperty(i)) {
-            continue;
-        }
-        var name = videoIds[i];
-        if (!document.getElementById(name)) {
-            easyrtc.showError(easyrtc.errCodes.DEVELOPER_ERR, "The caller video id '" + name + "' passed to easyApp was bad.");
-            return false;
-        }
-    }
-    return true;
-}//validateVideoIds
-
 function videoIsFree(obj) {
     return (obj.dataset.caller === "" || obj.dataset.caller === null || obj.dataset.caller === undefined);
 }
 
 function hideVideo(video) {
+    console.log("hideVideo called. Here is video");
+    console.log(video);
     easyrtc.setVideoObjectSrc(video, "");
+    //easyrtc.clearMediaStream(video);
     video.style.visibility = "hidden";
 }//hideVideo
 
 function showVideo(video, stream) {
+    console.log("showVideo called. Here is video & stream");
+    console.log(video);
+    console.log(stream);
+    //easyrtc.clearMediaStream(video);
     easyrtc.setVideoObjectSrc(video, stream);
     if (video.style.visibility) {
         video.style.visibility = 'visible';
     }
 }//showVideo
 
-//TODO - this is checking if there is an existing video tag
-//I'd rather create a new one!
-function videoAcceptChecker (caller, helper) {
-    var i;
-    for (i = 0; i < numPEOPLE; i++) {
-        var video = getIthVideo(i);
-        if (videoIsFree(video)) {
-            helper(true);
-            return;
-        }
-    }
-    helper(false);
-}//videoAcceptChecker
-
 function videoStreamAcceptor(caller, stream) {
-    var i;
     if (easyrtc.debugPrinter) {
         easyrtc.debugPrinter("stream acceptor called");
     }
 
-    var video;
-    if (refreshPane && videoIsFree(refreshPane)) {
-        showVideo(refreshPane, stream);
-        refreshPane = null;
-        return;
-    }
-    for (i = 0; i < numPEOPLE; i++) {
-        video = getIthVideo(i);
-        if (video.dataset.caller === caller) {
-            showVideo(video, stream);
-            return;
-        }
-    }
+    console.log("videoStreamAcceptor called with caller: " + caller + " and stream is");
+    console.log(stream);
 
-    for (i = 0; i < numPEOPLE; i++) {
-        video = getIthVideo(i);
-        if (!video.dataset.caller || videoIsFree(video)) {
-            video.dataset.caller = caller;
-            showVideo(video, stream);
-            return;
-        }
-    }
-//
-// no empty slots, so drop whatever caller we have in the first slot and use that one.
-//
-    video = getIthVideo(0);
-    if (video) {
-        easyrtc.hangup(video.dataset.caller);
-        showVideo(video, stream);
-    }
-    video.dataset.caller = caller;
+    //TODO prevent more than 10 video connections?
+
+    //create new video element and start streaming to it
+    if ($('#' + caller).length == 0) {
+        newVideoElement(caller);
+    } else {
+        //console.log ("Got call from " + caller + " but already had session open.");
+        $('#' + caller + '-wrapper').remove();
+        newVideoElement(caller);
+    }//if
+    showVideo($('#' + caller).get(0), stream);
 }//streamAcceptor
 
 function videoStreamClosedHandler(caller) {
-    var i;
-    for (i = 0; i < numPEOPLE; i++) {
-        var video = getIthVideo(i);
-        if (video.dataset.caller === caller) {
-            hideVideo(video);
-            video.dataset.caller = "";
-        }
-    }
+    var video = $('#' + caller).get(0);
+
+    console.log("videoStreamClosedHandler called with caller: " + caller);
+
+    hideVideo(video);
+    video.dataset.caller = "";
+
+    //destroy the caller-div wrapper and the video element inside it
+    $('#' + caller).remove();
+    $('#' + caller + '-wrapper').remove();
 }//videoStreamClosedHandler
 
-function getIthVideo(i) {
-    if (videoIds[i]) {
-        return document.getElementById(videoIds[i]);
-    }
-    else {
-        return null;
-    }
-}
-
-function getIthCaller(i) {
-    if (i < 0 || i > videoIds.length) {
-        return null;
-    }
-    var vid = getIthVideo(i);
-    return vid.dataset.caller;
-}
-
-function getSlotOfCaller(easyrtcid) {
-    var i;
-    for (i = 0; i < numPEOPLE; i++) {
-        if (self.getIthCaller(i) === easyrtcid) {
-            return i;
-        }
-    }
-    return -1; // caller not connected
-}
+function getVideoByEasyrtcid(easyrtcid) {
+    return document.getElementById(easyrtcid);
+}//getVideoByEasyrtcid
 
 function addControls() {
     var addControls, parentDiv, closeButton, i;
@@ -449,9 +350,10 @@ function addControls() {
         };
         parentDiv.appendChild(closeButton);
     };
-    for (i = 0; i < numPEOPLE; i++) {
-        addControls(getIthVideo(i));
-    }
+
+    $('.caller-div video').each(function() {
+      addControls($(this));
+    });
 }//addControls
 
 function muteMonitorVideo() {
