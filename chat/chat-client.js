@@ -38,8 +38,7 @@ function setUpVideoButton(op) {
       openVideo();
     });
   } else if (op === 'close') {
-    $('#video-button').html('Close Video');
-    $('#video-button').unbind('click');
+    $('#video-wrapper').append('<button id="video-button">Close Video</button>');
     $('#video-button').click(function() {
       closeVideo();
     });
