@@ -66,6 +66,7 @@ function rtcStartSession() {
 
   easyrtc.connect("Metamaps", function(easyrtcid) {
     window.selfEasyrtcid = easyrtcid; //success callback
+    $('#iam').html("I am " + easyrtc.username);
   }, function (errorCode, message) {
     easyrtc.showError(errorCode, message); //failure callback
   });
