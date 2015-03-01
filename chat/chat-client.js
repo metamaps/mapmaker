@@ -21,6 +21,7 @@ jQuery('document').ready(function() {
 
   $('#controls').remove(); //TODO take this back out, just for simplicity now
   window.isVideoOn = false;
+  easyrtc.enableCamera(false);
 });
 
 //when "Open Chat" button is pressed
@@ -119,6 +120,7 @@ function rtcStopBroadcastingVideo() {
 
 
 function rtcStopSession() {
+  rtpStopBroadcastingVideo();
   easyrtc.disconnect();
 }//rtcStopSession
 
@@ -311,6 +313,15 @@ function videoRoomListener(roomName, occupants) {
 }//videoRoomListener
 
 function videoStreamAcceptor(caller, stream) {
+    //make sure we aren't broadcasting if we shouldn't be 
+    if (window.isVideoOn) {
+      easyrtc.enableCamera(true);
+      easyrtc.enableAudio(true);
+    } else {
+      easyrtc.enableCamera(false);
+      easyrtc.enableAudio(false);
+    }//if
+
     if (easyrtc.debugPrinter) {
         easyrtc.debugPrinter("stream acceptor called");
     }
@@ -321,6 +332,8 @@ function videoStreamAcceptor(caller, stream) {
     //TODO prevent more than 10 video connections?
 
     //create new video element and start streaming to it
+    //$('#' + caller) returns an array of 0, 1, or more video elements (it should be just 1)
+    //get(0) gets the first (hopefully only) element of that array
     if ($('#' + caller).length == 0) {
         newVideoElement(caller);
     } else {
@@ -360,8 +373,7 @@ function addMessageToConversationDOM(who, msgType, content) {
   // Escape html special characters, then add linefeeds.
   content = content.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   content = content.replace(/\n/g, "<br />");
-  document.getElementById("conversation").innerHTML +=
-  "<b>" + from + ":</b>&nbsp;" + content + "<br />";
+  $('#conversation').append("<b>" + from + ":</b>&nbsp;" + content + "<br />");
 }
  
 function sendStuffWS(otherEasyrtcid) {
