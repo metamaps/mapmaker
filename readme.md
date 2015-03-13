@@ -2,10 +2,6 @@ Licensed under an AGPL open source licence
 
 # Mapmaker JS Library #
 
-WORKFLOW TODO
-- enable live reload so that we don't need to always be killing the process and restarting it. part of doing this will be modifying the /grunt/aliases.js file so that serve and/or serveNoOpen don't concat all the code into one file, and index.html just included them all separately.
-
-
 SPEC
 - a global object ```Mapmaker``` which can be used to generate a ```mapView``` from a ```map```
 - a ```mapView``` includes
