@@ -1,10 +1,11 @@
 module.exports = {
 	serveReload: {
 		options: {
-			'debug': true,
+			'debug': false,
 			'port': '4000',
 			'base': 'serve/',
 			open: true,
+			keepalive: false,
 			livereload: true
 		}
 	},
@@ -13,8 +14,8 @@ module.exports = {
 			debug: true,
 			port: '4000',
 			base: 'serve/',
-			open: true,
-			keepalive: true
+			open: false,
+			keepalive: false
 		}
 	},
 	serveNoOpen: {

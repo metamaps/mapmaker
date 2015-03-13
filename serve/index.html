@@ -1,50 +1,55 @@
 <!doctype html>
 <html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="css/metamapsMapRender.css" />
-		<link rel="stylesheet" type="text/css" href="js/bower_components/famous/dist/famous.css" />
-		<style>
-			#mapCanvas {
-				border   : 1px solid black;
-				position : absolute;
-				top      : 10px;
-				bottom   : 10px;
-				left     : 10px;
-				right    : 150px;
-			}
-			#controls {
-				position : absolute;
-				top      : 10px;
-				bottom   : 10px;
-				right    : 0px;
-				width    : 140px;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="mapCanvas"></div>
-		<div id="controls">
-			<div>
-				<!--<button id="zoomIn">Zoom In</button>-->
-			</div>
-		</div>
 
-    <!-- TODO: switch these to be 'template' tags -->
-		<script type="text/template" id="juntoTemplate"></script>
-		<script type="text/template" id="filterTemplate"></script>
-		<script type="text/template" id="mapInfoBoxTemplate"></script>
-		<script type="text/template" id="metacodeSetSwitchTemplate"></script>
-		<script type="text/template" id="newSynapseTemplate"></script>
-		<script type="text/template" id="newTopicTemplate">
-      <div class="open-metacode-switcher" data-mm-open-metacode-switcher></div>
-      <div class="metacode-img" data-mm-topic-metacode-image></div> 
-      <input type="text" class="topic-name" data-mm-topic-name maxlength="140" placeholder="title..." size="140">
-      <div class="metacode-title" data-mm-metacode-title></div>
-    </script>
-		<script type="text/template" id="synapseCardTemplate"></script>
-		<script type="text/template" id="topicCardTemplate">
+<head>
+
+  <link rel="stylesheet" type="text/css" href="css/metamapsMapRender.css" />
+  <link rel="stylesheet" type="text/css" href="js/bower_components/famous/dist/famous.css" />
+  <link rel="stylesheet" type="text/css" href="css/easyrtc.css" />
+  <script type="text/javascript" src="js/easyrtc.js"></script>
+  </script>
+  <style>
+    #mapCanvas {
+      border: 1px solid black;
+      width: 640px;
+      height: 320px;
+      margin: 1em;
+    }
+    
+    #controls {
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      right: 0px;
+      width: 140px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="mapCanvas"></div>
+  <div id="controls">
+    <div>
+      <!--<button id="zoomIn">Zoom In</button>-->
+    </div>
+  </div>
+
+  <!-- TODO: switch these to be 'template' tags -->
+  <script type="text/template" id="juntoTemplate"></script>
+  <script type="text/template" id="filterTemplate"></script>
+  <script type="text/template" id="mapInfoBoxTemplate"></script>
+  <script type="text/template" id="metacodeSetSwitchTemplate"></script>
+  <script type="text/template" id="newSynapseTemplate"></script>
+  <script type="text/template" id="newTopicTemplate">
+    <div class="open-metacode-switcher" data-mm-open-metacode-switcher></div>
+    <div class="metacode-img" data-mm-topic-metacode-image></div>
+    <input type="text" class="topic-name" data-mm-topic-name maxlength="140" placeholder="title..." size="140">
+    <div class="metacode-title" data-mm-metacode-title></div>
+  </script>
+  <script type="text/template" id="synapseCardTemplate"></script>
+  <script type="text/template" id="topicCardTemplate">
     <div class="CardOnGraph {{hasAttachment}}" id="topic_{{id}}">
-        <span class="title"> 
+      <span class="title"> 
             <div class="titleWrapper titleActivator">      
               <span class="best_in_place best_in_place_name"                      
                     data-url="/topics/{{id}}"                                     
@@ -52,90 +57,100 @@
                     data-attribute="name"
                     data-activator=".titleActivator"           
                     data-type="textarea">{{name}}</span>
-            </div> 
-        </span>
-        <div class="links">
-            <div class="linkItem icon">
-                <div class="metacodeTitle {{metacode_class}}">
-                  {{metacode}}
-                  <div class="expandMetacodeSelect"></div>
-                </div>
-                <div class="metacodeImage" style="background-image:url({{imgsrc}});" title="click and drag to move card"></div>
-                <div class="metacodeSelect">{{{metacode_select}}}</div>
-            </div>
-            <div class="linkItem contributor">
-                <a href="/explore/mapper/{{userid}}"><img src="/img/user.png" class="contributorIcon" width="32" height="32" /></a>
-                <div class="contributorName">{{username}}</div>
-            </div>
-            <div class="linkItem mapCount">                  
-                <div class="mapCountIcon"></div>
-                {{map_count}} 
-                <div class ="hoverTip">Click to see which maps topic appears on</div>
-                <div class="tip"><ul>{{{inmaps}}}</ul></div>                              
-            </div>
-
-            <a href="/topics/{{id}}" class="linkItem synapseCount">
-              <div class="synapseCountIcon"></div>
-              {{synapse_count}}
-              <div class="tip">Click to see this topics synapses</div>
-            </a>
-            <div class="linkItem mapPerm {{mk_permission}}" title="{{permission}}"></div>
-            <div class="clearfloat"></div>
-        </div>
-        <div class="scroll">
-            <div class="desc">
-                <span class="best_in_place best_in_place_desc" data-url="/topics/{{id}}" data-object="topic" data-nil="{{desc_nil}}" data-attribute="desc" data-type="textarea">{{desc}}</span> 
-                <div class="clearfloat"></div>
-            </div>
-        </div>
-        <div class="embeds">
-           {{{embeds}}}
-        </div>
-        <div class="attachments {{attachmentsHidden}}">
-            {{{attachments}}}
-        </div>
-        <div class="clearfloat"></div>
     </div>
-    </script>
+    </span>
+    <div class="links">
+      <div class="linkItem icon">
+        <div class="metacodeTitle {{metacode_class}}">
+          {{metacode}}
+          <div class="expandMetacodeSelect"></div>
+        </div>
+        <div class="metacodeImage" style="background-image:url({{imgsrc}});" title="click and drag to move card"></div>
+        <div class="metacodeSelect">{{{metacode_select}}}</div>
+      </div>
+      <div class="linkItem contributor">
+        <a href="/explore/mapper/{{userid}}"><img src="/img/user.png" class="contributorIcon" width="32" height="32" /></a>
+        <div class="contributorName">{{username}}</div>
+      </div>
+      <div class="linkItem mapCount">
+        <div class="mapCountIcon"></div>
+        {{map_count}}
+        <div class="hoverTip">Click to see which maps topic appears on</div>
+        <div class="tip">
+          <ul>{{{inmaps}}}</ul>
+        </div>
+      </div>
+
+      <a href="/topics/{{id}}" class="linkItem synapseCount">
+        <div class="synapseCountIcon"></div>
+        {{synapse_count}}
+        <div class="tip">Click to see this topics synapses</div>
+      </a>
+      <div class="linkItem mapPerm {{mk_permission}}" title="{{permission}}"></div>
+      <div class="clearfloat"></div>
+    </div>
+    <div class="scroll">
+      <div class="desc">
+        <span class="best_in_place best_in_place_desc" data-url="/topics/{{id}}" data-object="topic" data-nil="{{desc_nil}}" data-attribute="desc" data-type="textarea">{{desc}}</span>
+        <div class="clearfloat"></div>
+      </div>
+    </div>
+    <div class="embeds">
+      {{{embeds}}}
+    </div>
+    <div class="attachments {{attachmentsHidden}}">
+      {{{attachments}}}
+    </div>
+    <div class="clearfloat"></div>
+    </div>
+  </script>
 
 
-		<script src="js/bower_components/jquery/jquery.js"></script>
-		<script src="js/metamaps_renderer.js"></script>
-		<script>
-			var map, maker;
+  <script src="js/bower_components/jquery/jquery.js"></script>
+  <script src="js/metamaps_renderer.js"></script>
+  <script>
+    var map, maker;
 
-			function start(data) {
-				var topicMappings, synapseMappings;
+    function start(data) {
+      var topicMappings, synapseMappings;
 
-				map = new Mapmaker.Map(data.map);
+      map = new Mapmaker.Map(data.map);
 
-				map.set("topics", new Mapmaker.TopicCollection(data.topics));
-	            map.set("synapses", new Mapmaker.SynapseCollection(data.synapses));
-	            
-	            topicMappings = _.where(data.mappings, {category: "Topic"});
-	            map.set("topicMappings", new Mapmaker.MappingCollection(topicMappings));
+      map.set("topics", new Mapmaker.TopicCollection(data.topics));
+      map.set("synapses", new Mapmaker.SynapseCollection(data.synapses));
 
-	            synapseMappings = _.where(data.mappings, {category: "Synapse"});
-	            map.set("synapseMappings", new Mapmaker.MappingCollection(synapseMappings));
+      topicMappings = _.where(data.mappings, {
+        category: "Topic"
+      });
+      map.set("topicMappings", new Mapmaker.MappingCollection(topicMappings));
 
-				var config = {};
-				var canvasEl = document.getElementById("mapCanvas");
-				maker = Mapmaker.buildMaker.create(
-					canvasEl,
-					config,
-					map);
-        maker.view.Realtime.init();
-				$(maker).on(Mapmaker.Maker.events.message, function (event, message) {
-						console.log(message);
-				});
-			};
+      synapseMappings = _.where(data.mappings, {
+        category: "Synapse"
+      });
+      map.set("synapseMappings", new Mapmaker.MappingCollection(synapseMappings));
 
-			$(document).ready(function() {
-				$.ajax({
-          url: "/json/maps/map1103.json",
-          success: start
-		    });
-		  });
-		</script>
-	</body>
+      var config = {};
+      var canvasEl = document.getElementById("mapCanvas");
+      maker = Mapmaker.buildMaker.create(
+        canvasEl,
+        config,
+        map);
+      maker.view.Realtime.init();
+      $(maker).on(Mapmaker.Maker.events.message, function(event, message) {
+        console.log(message);
+      });
+    };
+
+    $(document).ready(function() {
+      $.ajax({
+        url: "/json/maps/map1103.json",
+        success: start
+      });
+    });
+  </script>
+  <div id="easyRTCWrapper">
+  </div>
+  <!-- easyRTCWrapper -->
+</body>
+
 </html>

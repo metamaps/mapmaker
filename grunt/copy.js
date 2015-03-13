@@ -1,4 +1,11 @@
 module.exports = {
+	init: {
+		files: [{
+			src: 'bower_components/**/*',
+			expand: true,
+			dest: 'serve/js/'
+		}]
+	},
 	serve: {
 		files: [{
 			src: 'dist/*',
@@ -8,16 +15,22 @@ module.exports = {
 			flatten: true,
 			filter: 'isFile'
 		}, {
+			src: 'node_modules/easyrtc/api/easyrtc.js',
+			expand: true,
+			flatten: true,
+			dest: 'serve/js/'
+		}, {
+			src: 'node_modules/easyrtc/api/easyrtc.css',
+			expand: true,
+			flatten: true,
+			dest: 'serve/css/'
+		}, {
 			src: 'css/*',
 			expand: true,
 			dest: 'serve/css/',
 			nonull: true,
 			flatten: true,
 			filter: 'isFile'
-//		}, {
-//			src: 'bower_components/**/*',
-//			expand: true,
-//			dest: 'serve/js/'
 		}, {
 			src: 'maps/*',
 			expand: true,

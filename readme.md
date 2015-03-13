@@ -55,23 +55,15 @@ Install bower for front-end dependencies, grunt for a local server
 npm install -g bower grunt-cli
 ```
 
-Actually download the front-end, and server dependencies
+Actually download the front-end, and server dependencies, and move some of them (grunt init)
 ```
-npm install && bower install
-```
-
-Run the front end server
-```
-grunt serve
-```
-(You can also use ```grunt serveNoOpen``` to not open the chrome window every time)
-
-Run the realtime server
-```
-node ./lib/server/server.js
+npm install && bower install && grunt init
 ```
 
-currently, the only way to see your code changes as you develop, depending where they were: the server, or other code, both require killing the process and restarting... CTRL+C will kill either process. 
+Run the development servers
+```
+grunt serveReload
+```
 
 ## Ideas for API of sudmodules ##
 

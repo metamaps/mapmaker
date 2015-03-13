@@ -4,9 +4,11 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:connoropolous/mapmaker.git"
-    },
+  },
   "dependencies": {
-    "socket.io": "^0.9.12"
+    "easyrtc"   : "1.0.x",
+    "socket.io" : "0.9.x",
+    "express"   : "*"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
@@ -20,6 +22,7 @@
     "grunt-contrib-nodeunit": "~0.2.2",
     "grunt-contrib-uglify": "~0.2.7",
     "grunt-contrib-watch": "~0.5.3",
+    "grunt-express-server": "^0.4.19",
     "grunt-jsbeautifier": "^0.2.7",
     "grunt-jsduck": "^1.0.1",
     "load-grunt-config": "^0.13.0",

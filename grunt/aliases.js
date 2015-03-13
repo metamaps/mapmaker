@@ -5,6 +5,9 @@ module.exports = {
 		'concat',
 		'uglify'
 	],
+	init: [
+		'copy:init',
+	],
 	dist: [
 		'jshint',
 		'jasmine',
@@ -22,22 +25,17 @@ module.exports = {
 		'concat',
 		'less:default',
 		'copy:serve',
-		'connect:serve'
-	],
-	serveNoOpen: [
-		'clean:serve',
-		'concat',
-		'less:default',
-		'copy:serve',
-		'connect:serveNoOpen'
+		'connect:serve',
+		'express:dev'
 	],
 	serveReload: [
 		'clean:serve',
 		'concat',
 		'less:default',
 		'copy:serve',
-		'watch:serve',
-		'connect:serveReload'
+		'connect:serveReload',
+		'express:devReload',
+		'watch'
 	],
 	deploy: [
 		'jasmine',

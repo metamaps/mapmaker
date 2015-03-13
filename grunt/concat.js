@@ -15,6 +15,7 @@ module.exports = {
 			'bower_components/embedly/embedly.js',
 			'bower_components/hogan/hogan-2.0.0.js',
 			'bower_components/famous/dist/famous-global.min.js',
+			'lib/chat/chat-client.js',
 			'lib/JIT.js',
 			'lib/utility.js',
 			'lib/views/mixins.js',

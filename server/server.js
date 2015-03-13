@@ -1,6 +1,22 @@
-var io = require('socket.io').listen(5001);
+// Load required modules
+var http    = require("http");              // http server core module
+var express = require("express");           // web framework external module
+var io      = require("socket.io");         // web socket external module
+var easyrtc = require("easyrtc");           // EasyRTC external module
 
-io.on('connection', function (socket) {
+// Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
+var httpApp = express();
+httpApp.use(express.static(__dirname + "/static/"));
+
+// Start Express http server on port 5002
+var webServer = http.createServer(httpApp).listen(5002);
+
+// Start Socket.io so it attaches itself to Express server
+var socketServer = io.listen(webServer, { "log level": 2 });
+
+// Start EasyRTC server
+var rtc = easyrtc.listen(httpApp, socketServer);
+socketServer.on('connection', function (socket) {
 
     // this will ping a new person with awareness of who's already on the map
     socket.on('updateNewMapperList', function (data) {
