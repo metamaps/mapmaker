@@ -19,7 +19,7 @@ module.exports = {
   },
 	express: {
 		files: [
-			'server/server.js'
+			'server/*.js'
 		],
 		tasks: ['express:devReload'],
 		options: {

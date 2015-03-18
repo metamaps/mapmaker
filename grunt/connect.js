@@ -4,7 +4,7 @@ module.exports = {
 			'debug': false,
 			'port': '4000',
 			'base': 'serve/',
-			open: true,
+			open: false,
 			keepalive: false,
 			livereload: true
 		}
