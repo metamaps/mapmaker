@@ -10,6 +10,6 @@
 	"latedef": true,
 	"smarttabs": true,
 	"newcap": true,
-	"predef": ["Mapmaker","jQuery","require", "Famous", "$", "_", "Backbone", "Hogan"],
+	"predef": ["Mapmaker","jQuery","require", "Famous", "$", "_", "Backbone", "Hogan", "embedly", "Countable"],
 	"maxlen": 120
 }
