@@ -33,6 +33,7 @@ module.exports = {
 			'lib/models/synapse.js',
 			'lib/views/synapseMappingView.js',
 			'lib/views/synapseCardView.js',
+			'lib/views/videoView.js',
 			'lib/models/map.js',
 			'lib/views/mapView.js',
 			'lib/models/mapper.js',

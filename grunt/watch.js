@@ -10,9 +10,10 @@ module.exports = {
 	client: {
 		files: [
 			'serve/index.html',
-			'lib/**/*.js'
+			'lib/**/*.js',
+			'less/**'
 		],
-		tasks: ['copy:serve'],
+		tasks: ['less:default', 'concat:dist', 'copy:serve'],
 		options: {
 			livereload: true
 		}

@@ -10,6 +10,6 @@
 	"latedef": true,
 	"smarttabs": true,
 	"newcap": true,
-	"predef": ["Metamaps","Raphael","jQuery","require"],
+	"predef": ["Mapmaker","jQuery","require", "Famous", "$", "_", "Backbone", "Hogan"],
 	"maxlen": 120
 }
