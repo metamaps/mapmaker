@@ -16,7 +16,7 @@
       width: 100%;
       height: 100%;
     }
-    
+
     #controls {
       position: absolute;
       top: 0px;
@@ -36,6 +36,13 @@
   </div>
 
   <!-- TODO: switch these to be 'template' tags -->
+  <script type="text/template" id="messageTemplate">
+    <div class="chat-message clearfloat">
+      <div class="chat-message-user">{{user}}</div>
+      <div class="chat-message-text">{{message}}</div>
+      <div class="chat-message-time">{{timestamp}}</div>
+    </div>
+  </script>
   <script type="text/template" id="juntoTemplate"></script>
   <script type="text/template" id="filterTemplate"></script>
   <script type="text/template" id="mapInfoBoxTemplate"></script>
@@ -50,13 +57,13 @@
   <script type="text/template" id="synapseCardTemplate"></script>
   <script type="text/template" id="topicCardTemplate">
     <div class="CardOnGraph {{hasAttachment}}" id="topic_{{id}}">
-      <span class="title"> 
-            <div class="titleWrapper titleActivator">      
-              <span class="best_in_place best_in_place_name"                      
-                    data-url="/topics/{{id}}"                                     
-                    data-object="topic"                                           
+      <span class="title">
+            <div class="titleWrapper titleActivator">
+              <span class="best_in_place best_in_place_name"
+                    data-url="/topics/{{id}}"
+                    data-object="topic"
                     data-attribute="name"
-                    data-activator=".titleActivator"           
+                    data-activator=".titleActivator"
                     data-type="textarea">{{name}}</span>
     </div>
     </span>
@@ -106,11 +113,12 @@
     </div>
   </script>
 
-  <script src="js/bower_components/SimpleWebRTC/simplewebrtc.bundle.js"></script> 
+  <script src="js/bower_components/SimpleWebRTC/simplewebrtc.bundle.js"></script>
+  <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
   <script src="js/bower_components/jquery/jquery.js"></script>
   <script src="js/metamaps_renderer.js"></script>
   <script>
-    var map, maker;
+    var map, maker, fb = new Firebase('https://juntograph.firebaseio.com/maps');
 
     function start(data) {
       var topicMappings, synapseMappings;
@@ -130,6 +138,8 @@
       });
       map.set("synapseMappings", new Mapmaker.MappingCollection(synapseMappings));
 
+      map.set("messages", new Backbone.Collection(data.messages));
+
       var config = {};
       var canvasEl = document.getElementById("mapCanvas");
 
@@ -145,14 +155,26 @@
       $(maker).on(Mapmaker.Maker.events.message, function(event, message) {
         console.log(message);
       });
+
+      maker.save = function() {
+        fb.child(this.map.id).set(this.export());
+      };
+    };
+
+
+    function getMapByID(id, cb) {
+      fb.child(id).once('value', function (snap) {
+        cb(snap.val());
+      });
     };
 
     $(document).ready(function() {
-      $.ajax({
-        url: "/json/maps/map1103.json",
-        success: start
-      });
-    });
+      getMapByID('1103', start);
+    //  $.ajax({
+    //    url: "/json/maps/map1103.json",
+    //    success: start
+    //  });
+     });
   </script>
 </body>
 

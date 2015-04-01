@@ -34,6 +34,7 @@ module.exports = {
 			'lib/views/synapseMappingView.js',
 			'lib/views/synapseCardView.js',
 			'lib/views/videoView.js',
+			'lib/views/chatView.js',
 			'lib/models/map.js',
 			'lib/views/mapView.js',
 			'lib/models/mapper.js',

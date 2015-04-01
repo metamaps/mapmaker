@@ -1,5 +1,11 @@
 module.exports = function(io) {
   io.on('connection', function (socket) {
+
+    socket.on('chatMessage', function (data) {
+        var message = data.message;
+        socket.broadcast.emit('maps-' + data.mapid + '-chatMessage', message);
+    });
+
     // this will ping a new person with awareness of who's already on the map
     socket.on('updateNewMapperList', function (data) {
         var existingUser = {
