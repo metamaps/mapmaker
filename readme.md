@@ -6,7 +6,7 @@ SPEC
 - a global object ```Mapmaker``` which can be used to generate a ```mapView``` from a ```map```
 - a ```mapView``` includes
   - INPUTS: ability to intake JSON for a ```map```, ```metacodeSet```'s, and ```metacodes```
-  - PERSISTING: can output JSON, via Backbone models ```SAVE```, for ```topic```, ```synapse```, ```map```, and ```mapping```
+  - PERSISTING: can output JSON, via Backbone models ```SAVE```, for ```topic```, ```synapse```, ```map```, ```mapping```, and ```messages```
   - topic cards, used to view details of, and edit, topics
   - synapse cards, used to view details of, and edit, synapses
   - map Info box, used to view details of, and edit, the map
@@ -25,7 +25,8 @@ config = {};
 maker = Mapmaker.buildMaker.create(canvasEl, config, map);
 
 maker.exportImage();
-maker.save();
+maker.export(); // a json object of the whole map, including messages
+maker.save(); // do whatever custom behaviour save is set up to do
 ```
 
 ## GETTING SET UP TO DEV ##
